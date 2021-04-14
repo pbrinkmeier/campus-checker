@@ -31,9 +31,9 @@ printCookies = mapM_ printCookie . destroyCookieJar
 
 -- Establish a session with campus.studium.kit.edu through the Shibboleth login form
 establishSession :: String -> String -> IO CookieJar
-establishSession username passfile = do
+establishSession username password = do
   lfParams <- getLoginFormParameters
-  password <- readFile passfile
+  -- password <- readFile passfile
   redirectParams <- sendLoginForm lfParams username password
   cookies <- completeRedirect redirectParams
   putStrLn $ "Authentication for " ++ username ++ " succeeded."
@@ -176,6 +176,12 @@ completeCvRedirect (cookies, relayState, samlResponse) = do
       , "SAMLResponse" =: samlResponse
       ]
 
+data Grade = NumberGrade Float | Passed | NotPassed | Missing deriving (Show)
+
+decodeGrade "be" = Passed
+decodeGrade "nb" = NotPassed
+decodeGrade _ = error "not implemented"
+
 extractAndPrintGrades :: String -> IO ()
 extractAndPrintGrades body = do
   let doc = parseHtml body
@@ -184,8 +190,9 @@ extractAndPrintGrades body = do
 
   mapM_ printGrade grades
   where
-    printGrade (title, grade) = putStrLn $ grade ++ "\t" ++ title
+    printGrade (title, grade) = putStrLn $ maybe "Missing" id grade ++ "\t" ++ title
 
     gradesArrow = css "tr.brick" >>> (titleArrow &&& gradeArrow)
     titleArrow = css "a[title]" ! "title"
-    gradeArrow = css "td.nowrap" >>> ifA (this /> getText) (this /> getText) (arr $ const "MISSING")
+    -- gradeArrow = css "td.nowrap" >>> ifA (this /> getText) (this /> getText >>> arr decodeGrade) (arr $ const Missing)
+    gradeArrow = css "td.nowrap" >>> ifA (this /> getText) (this /> getText >>> arr Just) (arr $ const Nothing)
