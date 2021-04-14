@@ -1,0 +1,83 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 0e6e1b0095392eb37978ebda27fe05b0d419157953caf6e0f75fcf1bedbd827b
+
+name:           campus-checker
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/campus-checker#readme>
+homepage:       https://github.com/githubuser/campus-checker#readme
+bug-reports:    https://github.com/githubuser/campus-checker/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/campus-checker
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_campus_checker
+  hs-source-dirs:
+      src
+  build-depends:
+      HandsomeSoup
+    , aeson
+    , base >=4.7 && <5
+    , containers
+    , http-client
+    , hxt
+    , req
+    , utf8-string
+  default-language: Haskell2010
+
+executable campus-checker-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_campus_checker
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HandsomeSoup
+    , aeson
+    , base >=4.7 && <5
+    , campus-checker
+    , containers
+    , http-client
+    , hxt
+    , req
+    , utf8-string
+  default-language: Haskell2010
+
+test-suite campus-checker-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_campus_checker
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      HandsomeSoup
+    , aeson
+    , base >=4.7 && <5
+    , campus-checker
+    , containers
+    , http-client
+    , hxt
+    , req
+    , utf8-string
+  default-language: Haskell2010
